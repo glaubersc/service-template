@@ -7,6 +7,7 @@ type Config struct {
 	HTTPPort    string
 	GRPCPort    string
 	MongoURI    string
+	MongoDB     string
 	NatsURL     string
 }
 
@@ -16,6 +17,7 @@ func Load() Config {
 		HTTPPort:    getEnv("HTTP_PORT", "8080"),
 		GRPCPort:    getEnv("GRPC_PORT", "9090"),
 		MongoURI:    getEnv("MONGO_URI", "mongodb://localhost:27017"),
+		MongoDB:     getEnv("MONGO_DB", "service_template"),
 		NatsURL:     getEnv("NATS_URL", "nats://localhost:4222"),
 	}
 }
