@@ -1,7 +1,7 @@
 package grpciface
 
 import (
-	"github.com/your-org/service-template/internal/domain/service"
+	"github.com/glaubersc/ecosystem/services/service-template/internal/domain/service"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )

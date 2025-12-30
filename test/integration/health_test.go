@@ -5,7 +5,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/your-org/service-template/internal/interfaces/rest"
+	"github.com/glaubersc/ecosystem/services/service-template/internal/interfaces/rest"
 )
 
 func TestHealthEndpoint(t *testing.T) {

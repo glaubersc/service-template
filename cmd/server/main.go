@@ -7,11 +7,11 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/glaubersc/ecosystem/services/service-template/internal/infrastructure/config"
 	"github.com/glaubersc/ecosystem/services/service-template/internal/infrastructure/messaging"
 	"github.com/glaubersc/ecosystem/services/service-template/internal/infrastructure/mongo"
-	"github.com/your-org/service-template/internal/infrastructure/config"
-	grpciface "github.com/your-org/service-template/internal/interfaces/grpc"
-	"github.com/your-org/service-template/internal/interfaces/rest"
+	grpciface "github.com/glaubersc/ecosystem/services/service-template/internal/interfaces/grpc"
+	"github.com/glaubersc/ecosystem/services/service-template/internal/interfaces/rest"
 )
 
 func main() {

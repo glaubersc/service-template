@@ -3,7 +3,7 @@ package mongo
 import (
 	"context"
 
-	"github.com/your-org/service-template/internal/domain/repository"
+	"github.com/glaubersc/ecosystem/services/service-template/internal/domain/repository"
 	"go.mongodb.org/mongo-driver/bson"
 )
 

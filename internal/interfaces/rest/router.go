@@ -16,15 +16,23 @@ func NewRouter() http.Handler {
 	r.Get("/health", healthHandler)
 	r.Get("/ready", readinessHandler)
 
+	r.Get("/swagger/*", func(w http.ResponseWriter, r *http.Request) {
+		SwaggerHandler().ServeHTTP(w, r)
+	})
+
+	r.Get("/swagger/openapi.yaml", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "api/openapi/openapi.yaml")
+	})
+
 	return r
 }
 
 func healthHandler(w http.ResponseWriter, _ *http.Request) {
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("ok"))
+	_, _ = w.Write([]byte("ok"))
 }
 
 func readinessHandler(w http.ResponseWriter, _ *http.Request) {
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("ready"))
+	_, _ = w.Write([]byte("ready"))
 }

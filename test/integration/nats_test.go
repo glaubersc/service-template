@@ -4,8 +4,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/your-org/service-template/internal/domain/event"
-	"github.com/your-org/service-template/internal/infrastructure/messaging"
+	"github.com/glaubersc/ecosystem/services/service-template/internal/domain/event"
+	"github.com/glaubersc/ecosystem/services/service-template/internal/infrastructure/messaging"
 )
 
 func TestNATSPublish(t *testing.T) {

@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/your-org/service-template/internal/domain/service"
+	"github.com/glaubersc/ecosystem/services/service-template/internal/domain/service"
 )
 
 func writeError(w http.ResponseWriter, r *http.Request, err error, status int) {

@@ -3,7 +3,7 @@ package messaging
 import (
 	"encoding/json"
 
-	domainevent "github.com/your-org/service-template/internal/domain/event"
+	domainevent "github.com/glaubersc/ecosystem/services/service-template/internal/domain/event"
 )
 
 type NATSPublisher struct {

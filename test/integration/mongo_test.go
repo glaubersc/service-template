@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/your-org/service-template/internal/infrastructure/mongo"
+	"github.com/glaubersc/ecosystem/services/our-org/service-template/internal/infrastructure/mongo"
 )
 
 func TestMongoConnection(t *testing.T) {

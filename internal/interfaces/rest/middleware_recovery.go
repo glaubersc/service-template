@@ -3,7 +3,7 @@ package rest
 import (
 	"net/http"
 
-	"github.com/your-org/service-template/internal/domain/service"
+	"github.com/glaubersc/ecosystem/services/service-template/internal/domain/service"
 )
 
 func RecoveryMiddleware(next http.Handler) http.Handler {

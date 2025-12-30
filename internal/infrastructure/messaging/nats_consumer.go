@@ -4,7 +4,9 @@ import (
 	"encoding/json"
 	"log"
 
-	domainevent "github.com/your-org/service-template/internal/domain/event"
+	"github.com/nats-io/nats.go"
+
+	domainevent "github.com/glaubersc/ecosystem/services/service-template/internal/domain/event"
 )
 
 type Consumer struct {
@@ -26,10 +28,10 @@ func NewConsumer(
 }
 
 func (c *Consumer) Start() error {
-	_, err := c.client.JS.Subscribe(c.subject, func(msg []byte) {
+	_, err := c.client.JS.Subscribe(c.subject, func(msg *nats.Msg) {
 		var evt domainevent.Envelope
 
-		if err := json.Unmarshal(msg, &evt); err != nil {
+		if err := json.Unmarshal(msg.Data, &evt); err != nil {
 			log.Printf("invalid event payload: %v", err)
 			return
 		}
@@ -38,6 +40,9 @@ func (c *Consumer) Start() error {
 			log.Printf("event handling failed: %v", err)
 			return
 		}
+
+		// Acknowledge only on success (JetStream best practice)
+		_ = msg.Ack()
 	})
 
 	return err
