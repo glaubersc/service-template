@@ -17,6 +17,13 @@ import (
 func main() {
 	cfg := config.Load()
 
+	// Base context (used for startup only)
+	baseCtx := context.Background()
+
+	// --------------------
+	// Infrastructure
+	// --------------------
+
 	// NATS
 	natsClient, err := messaging.Connect(cfg.NatsURL)
 	if err != nil {
@@ -25,10 +32,14 @@ func main() {
 	defer natsClient.Close()
 
 	// MongoDB
-	mongoClient, err := mongo.Connect(ctx, cfg.MongoURI, cfg.MongoDB)
+	mongoClient, err := mongo.Connect(baseCtx, cfg.MongoURI, cfg.MongoDB)
 	if err != nil {
 		log.Fatalf("mongo connection failed: %v", err)
 	}
+
+	// --------------------
+	// Interfaces
+	// --------------------
 
 	// REST
 	router := rest.NewRouter()
@@ -41,18 +52,38 @@ func main() {
 		log.Fatalf("failed to start gRPC: %v", err)
 	}
 
-	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
+	// --------------------
+	// Signal handling
+	// --------------------
+
+	ctx, stop := signal.NotifyContext(
+		context.Background(),
+		syscall.SIGINT,
+		syscall.SIGTERM,
+	)
 	defer stop()
+
+	// --------------------
+	// Start servers
+	// --------------------
 
 	go func() {
 		log.Printf("HTTP running on %s", cfg.HTTPPort)
-		httpServer.Start()
+		if err := httpServer.Start(); err != nil {
+			log.Printf("HTTP server stopped: %v", err)
+		}
 	}()
 
 	go func() {
 		log.Printf("gRPC running on %s", cfg.GRPCPort)
-		grpcServer.Start()
+		if err := grpcServer.Start(); err != nil {
+			log.Printf("gRPC server stopped: %v", err)
+		}
 	}()
+
+	// --------------------
+	// Graceful shutdown
+	// --------------------
 
 	<-ctx.Done()
 	log.Println("shutdown started")
@@ -60,7 +91,10 @@ func main() {
 	shutdownCtx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	mongo.Disconnect(shutdownCtx, mongoClient.DB.Client())
+	// Order matters
 	httpServer.Shutdown(shutdownCtx)
 	grpcServer.Stop()
+	mongo.Disconnect(shutdownCtx, mongoClient.DB.Client())
+
+	log.Println("shutdown completed")
 }
